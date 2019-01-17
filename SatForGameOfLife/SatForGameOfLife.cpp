@@ -164,10 +164,9 @@ public:
 	{
 		// пишем КНФ и DIMACS
 		const auto liveNum = std::count_if(configuration.begin(), configuration.end(), [](const bool val) { return val; });
-		const auto varNum = (rows + 2)*(columns + 2);
-		const auto clauseNum = cnfMasksLive.size() * liveNum + cnfMasksDead.size() * (varNum - liveNum) +
+		const auto clauseNum = cnfMasksLive.size() * liveNum + cnfMasksDead.size() * (rows*columns - liveNum) +
 			cnfLeftTop.size() + cnfRightTop.size() + cnfLeftBottom.size() + cnfRightBottom.size() + rows * (cnfLeft.size() + cnfRight.size()) + columns * (cnfTop.size() + cnfBottom.size());
-		dimacs_ << "p cnf " << varNum << ' ' << clauseNum << '\n';
+		dimacs_ << "p cnf " << (rows + 2)*(columns + 2) << ' ' << clauseNum << '\n';
 
 		// КНФ клеток конфигурации
 		for (uint32_t i = 0; i < rows; i++) {
