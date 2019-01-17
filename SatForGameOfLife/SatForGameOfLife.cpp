@@ -231,16 +231,31 @@ int main() {
 	auto input = std::ifstream("input.txt");
 	std::vector<bool> input_v(0);
 
-	int count_number = 0;
+	int count_row = 0;
+	int count_col = 0;
 	int current_number = 0;
-	while (input >> current_number) {
+
+	std::string s;
+	while (std::getline(input, s)) {
+		std::istringstream ss(s);
+		count_col = 0;
+		while (ss >> current_number)
+		{
+			count_col++;
+			input_v.push_back(static_cast<bool>(current_number));
+		}
+		count_row++;
+	}
+	//for(const auto &num : items)
+	//input_v.push_back(num);
+	/*while (input >> current_number) {
 		input_v.push_back(((bool)current_number));
 		count_number++;
-	}
+	}*/
 
 	try {
 		GameOfLifeCnf::init();
-		GameOfLifeCnf cnf(((int)sqrt(count_number)), ((int)sqrt(count_number)), input_v);
+		GameOfLifeCnf cnf(((int)sqrt(count_row)), ((int)sqrt(count_col)), input_v);
 
 		out << cnf.getCnf();
 		outDimacs << cnf.getDimacs();
